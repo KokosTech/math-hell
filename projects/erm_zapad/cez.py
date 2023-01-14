@@ -3,6 +3,7 @@ import sys
 # prices for the services
 service_prices = [0.129, 1.461, 85.07, 0.132]
 
+
 def gauss_jordan_elimination(matrix):
     for i in range(len(matrix)):
         # find the row with the largest coefficient
@@ -20,9 +21,11 @@ def gauss_jordan_elimination(matrix):
         # subtract row from other rows
         for j in range(len(matrix)):
             if j != i:
-                matrix[j] = [matrix[j][k] - matrix[j][i]*matrix[i][k] for k in range(len(matrix[i]))]
+                matrix[j] = [matrix[j][k] - matrix[j][i]*matrix[i][k]
+                             for k in range(len(matrix[i]))]
 
     return [matrix[i][-1] for i in range(len(matrix))]
+
 
 # read input file
 input_file = sys.argv[1]
@@ -36,7 +39,8 @@ bill_data = [float(x) for x in data[4].strip().split()]
 
 # calculate total usage and bill for each company
 total_usage = [sum(usage) for usage in company_data]
-total_bill = [service_prices[j]*company_data[i][j] for j in range(4) for i in range(4)]
+total_bill = [service_prices[j]*company_data[i][j]
+              for j in range(4) for i in range(4)]
 
 # calculate difference between bill and usage data - using Gauss-Jordan elimination
 bill_diff = [bill_data[i] - total_bill[i] for i in range(4)]
@@ -47,7 +51,8 @@ for i in range(4):
 real_price = gauss_jordan_elimination(company_data.copy())
 
 # company_data[i][j] - (company_data[i][j] * service_prices[j] / real_price[j])
-usage_diff = [[company_data[i][j] - (company_data[i][j] * service_prices[j] / real_price[j]) for j in range(4)] for i in range(4)]
+usage_diff = [[company_data[i][j] - (company_data[i][j] * service_prices[j] / real_price[j])
+               for j in range(4)] for i in range(4)]
 
 # print results
 print("Differences between bill data and calculations:")

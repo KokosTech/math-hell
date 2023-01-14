@@ -1,0 +1,101 @@
+[
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "gauss_jordan_elimination",
+        "kind": 2,
+        "importPath": "cez",
+        "description": "cez",
+        "peekOfCode": "def gauss_jordan_elimination(matrix):\n    for i in range(len(matrix)):\n        # find the row with the largest coefficient\n        max_row = i\n        for j in range(i+1, len(matrix)):\n            if abs(matrix[j][i]) > abs(matrix[max_row][i]):\n                max_row = j\n        # swap rows\n        matrix[i], matrix[max_row] = matrix[max_row], matrix[i]\n        # divide row by the coefficient",
+        "detail": "cez",
+        "documentation": {}
+    },
+    {
+        "label": "service_prices",
+        "kind": 5,
+        "importPath": "cez",
+        "description": "cez",
+        "peekOfCode": "service_prices = [0.129, 1.461, 85.07, 0.132]\ndef gauss_jordan_elimination(matrix):\n    for i in range(len(matrix)):\n        # find the row with the largest coefficient\n        max_row = i\n        for j in range(i+1, len(matrix)):\n            if abs(matrix[j][i]) > abs(matrix[max_row][i]):\n                max_row = j\n        # swap rows\n        matrix[i], matrix[max_row] = matrix[max_row], matrix[i]",
+        "detail": "cez",
+        "documentation": {}
+    },
+    {
+        "label": "input_file",
+        "kind": 5,
+        "importPath": "cez",
+        "description": "cez",
+        "peekOfCode": "input_file = sys.argv[1]\nwith open(input_file, 'r') as f:\n    data = f.readlines()\n# get usage and bill data for each company\ncompany_data = [[float(x) for x in line.strip().split()] for line in data[:4]]\nbill_data = [float(x) for x in data[4].strip().split()]\n# calculate total usage and bill for each company\ntotal_usage = [sum(usage) for usage in company_data]\ntotal_bill = [service_prices[j]*company_data[i][j]\n              for j in range(4) for i in range(4)]",
+        "detail": "cez",
+        "documentation": {}
+    },
+    {
+        "label": "company_data",
+        "kind": 5,
+        "importPath": "cez",
+        "description": "cez",
+        "peekOfCode": "company_data = [[float(x) for x in line.strip().split()] for line in data[:4]]\nbill_data = [float(x) for x in data[4].strip().split()]\n# calculate total usage and bill for each company\ntotal_usage = [sum(usage) for usage in company_data]\ntotal_bill = [service_prices[j]*company_data[i][j]\n              for j in range(4) for i in range(4)]\n# calculate difference between bill and usage data - using Gauss-Jordan elimination\nbill_diff = [bill_data[i] - total_bill[i] for i in range(4)]\nfor i in range(4):\n    company_data[i].append(bill_data[i])",
+        "detail": "cez",
+        "documentation": {}
+    },
+    {
+        "label": "bill_data",
+        "kind": 5,
+        "importPath": "cez",
+        "description": "cez",
+        "peekOfCode": "bill_data = [float(x) for x in data[4].strip().split()]\n# calculate total usage and bill for each company\ntotal_usage = [sum(usage) for usage in company_data]\ntotal_bill = [service_prices[j]*company_data[i][j]\n              for j in range(4) for i in range(4)]\n# calculate difference between bill and usage data - using Gauss-Jordan elimination\nbill_diff = [bill_data[i] - total_bill[i] for i in range(4)]\nfor i in range(4):\n    company_data[i].append(bill_data[i])\nreal_price = gauss_jordan_elimination(company_data.copy())",
+        "detail": "cez",
+        "documentation": {}
+    },
+    {
+        "label": "total_usage",
+        "kind": 5,
+        "importPath": "cez",
+        "description": "cez",
+        "peekOfCode": "total_usage = [sum(usage) for usage in company_data]\ntotal_bill = [service_prices[j]*company_data[i][j]\n              for j in range(4) for i in range(4)]\n# calculate difference between bill and usage data - using Gauss-Jordan elimination\nbill_diff = [bill_data[i] - total_bill[i] for i in range(4)]\nfor i in range(4):\n    company_data[i].append(bill_data[i])\nreal_price = gauss_jordan_elimination(company_data.copy())\n# company_data[i][j] - (company_data[i][j] * service_prices[j] / real_price[j])\nusage_diff = [[company_data[i][j] - (company_data[i][j] * service_prices[j] / real_price[j])",
+        "detail": "cez",
+        "documentation": {}
+    },
+    {
+        "label": "total_bill",
+        "kind": 5,
+        "importPath": "cez",
+        "description": "cez",
+        "peekOfCode": "total_bill = [service_prices[j]*company_data[i][j]\n              for j in range(4) for i in range(4)]\n# calculate difference between bill and usage data - using Gauss-Jordan elimination\nbill_diff = [bill_data[i] - total_bill[i] for i in range(4)]\nfor i in range(4):\n    company_data[i].append(bill_data[i])\nreal_price = gauss_jordan_elimination(company_data.copy())\n# company_data[i][j] - (company_data[i][j] * service_prices[j] / real_price[j])\nusage_diff = [[company_data[i][j] - (company_data[i][j] * service_prices[j] / real_price[j])\n               for j in range(4)] for i in range(4)]",
+        "detail": "cez",
+        "documentation": {}
+    },
+    {
+        "label": "bill_diff",
+        "kind": 5,
+        "importPath": "cez",
+        "description": "cez",
+        "peekOfCode": "bill_diff = [bill_data[i] - total_bill[i] for i in range(4)]\nfor i in range(4):\n    company_data[i].append(bill_data[i])\nreal_price = gauss_jordan_elimination(company_data.copy())\n# company_data[i][j] - (company_data[i][j] * service_prices[j] / real_price[j])\nusage_diff = [[company_data[i][j] - (company_data[i][j] * service_prices[j] / real_price[j])\n               for j in range(4)] for i in range(4)]\n# print results\nprint(\"Differences between bill data and calculations:\")\nfor diff in bill_diff:",
+        "detail": "cez",
+        "documentation": {}
+    },
+    {
+        "label": "real_price",
+        "kind": 5,
+        "importPath": "cez",
+        "description": "cez",
+        "peekOfCode": "real_price = gauss_jordan_elimination(company_data.copy())\n# company_data[i][j] - (company_data[i][j] * service_prices[j] / real_price[j])\nusage_diff = [[company_data[i][j] - (company_data[i][j] * service_prices[j] / real_price[j])\n               for j in range(4)] for i in range(4)]\n# print results\nprint(\"Differences between bill data and calculations:\")\nfor diff in bill_diff:\n    print(\"%.3f\" % diff, end='\\t')\nprint(\"\\nDifferences between usage data and billing:\")\nfor company in usage_diff:",
+        "detail": "cez",
+        "documentation": {}
+    },
+    {
+        "label": "usage_diff",
+        "kind": 5,
+        "importPath": "cez",
+        "description": "cez",
+        "peekOfCode": "usage_diff = [[company_data[i][j] - (company_data[i][j] * service_prices[j] / real_price[j])\n               for j in range(4)] for i in range(4)]\n# print results\nprint(\"Differences between bill data and calculations:\")\nfor diff in bill_diff:\n    print(\"%.3f\" % diff, end='\\t')\nprint(\"\\nDifferences between usage data and billing:\")\nfor company in usage_diff:\n    for diff in company:\n        print(\"%.3f\" % diff, end='\\t')",
+        "detail": "cez",
+        "documentation": {}
+    }
+]
