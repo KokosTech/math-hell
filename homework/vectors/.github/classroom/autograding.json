@@ -1,0 +1,464 @@
+{
+  "tests": [
+    {
+      "name": "init",
+      "setup": "make all",
+      "run": "./all",
+      "input": "e",
+      "output": "",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "vector constructor 1",
+      "setup": "make all",
+      "run": "./all",
+      "input": "v c\r\n1 2\r\n2 3\r\ne",
+      "output": "(1, 1)",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "vector constructor 2",
+      "setup": "make all",
+      "run": "./all",
+      "input": "v c\r\n1 0\r\n0 1\r\ne",
+      "output": "(-1, 1)",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "vector constructor 3",
+      "setup": "make all",
+      "run": "./all",
+      "input": "v c\r\n1 -1\r\n-1 1\r\ne",
+      "output": "(-2, 2)",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "vector sum 1",
+      "setup": "make all",
+      "run": "./all",
+      "input": "v s\r\n1 2\r\n2 3\r\ne",
+      "output": "(3, 5)\r\n(3, 5)",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "vector sum 2",
+      "setup": "make all",
+      "run": "./all",
+      "input": "v s\r\n1 0\r\n0 1\r\ne",
+      "output": "(1, 1)\r\n(1, 1)",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "vector sum 3",
+      "setup": "make all",
+      "run": "./all",
+      "input": "v s\r\n10 -1\r\n-10 1\r\ne",
+      "output": "(0, 0)\r\n(0, 0)",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "vector times 1",
+      "setup": "make all",
+      "run": "./all",
+      "input": "v t\r\n2\r\n1 2\r\ne",
+      "output": "(2, 4)",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "vector times 2 ",
+      "setup": "make all",
+      "run": "./all",
+      "input": "v t\r\n-11\r\n1 0\r\ne",
+      "output": "(-11, 0)",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "vector times 3",
+      "setup": "make all",
+      "run": "./all",
+      "input": "v t\r\n0\r\n52 -41\r\ne",
+      "output": "(0, 0)",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "vector is 1",
+      "setup": "make all",
+      "run": "./all",
+      "input": "v i\r\n1 0\r\n2 3\r\ne",
+      "output": "0",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "vector is 2",
+      "setup": "make all",
+      "run": "./all",
+      "input": "v i\r\n0 0\r\n0 1\r\ne",
+      "output": "1",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "vector is 3",
+      "setup": "make all",
+      "run": "./all",
+      "input": "v i\r\n1 -1\r\n-2 2\r\ne",
+      "output": "1",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "vector lenght 1",
+      "setup": "make all",
+      "run": "./all",
+      "input": "v l\r\n3 4\r\ne",
+      "output": "5",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "vector lenght 2",
+      "setup": "make all",
+      "run": "./all",
+      "input": "v l\r\n5 12\r\ne",
+      "output": "13",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "vector lenght 3",
+      "setup": "make all",
+      "run": "./all",
+      "input": "v l\r\n0 0\r\ne",
+      "output": "0",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "vector dot 1",
+      "setup": "make all",
+      "run": "./all",
+      "input": "v d\r\n1 2\r\n2 3\r\ne",
+      "output": "8",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "vector dot 2",
+      "setup": "make all",
+      "run": "./all",
+      "input": "v d\r\n1 0\r\n0 1\r\ne",
+      "output": "0",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "vector dot 3",
+      "setup": "make all",
+      "run": "./all",
+      "input": "v d\r\n1 -1\r\n-2 2\r\ne",
+      "output": "-4",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "vector multi 1",
+      "setup": "make all",
+      "run": "./all",
+      "input": "v m\r\n1 2\r\n2 3\r\ne",
+      "output": "(-1, -1)\r\n(4, 7)",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "vector multi 2",
+      "setup": "make all",
+      "run": "./all",
+      "input": "v m\r\n1 0\r\n0 1\r\ne",
+      "output": "(1, -1)\r\n(2, 1)",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "vector multi 3",
+      "setup": "make all",
+      "run": "./all",
+      "input": "v m\r\n2 -2\r\n-1 1\r\ne",
+      "output": "(3, -3)\r\n(3, -3)",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "vector area 1",
+      "setup": "make all",
+      "run": "./all",
+      "input": "v a\r\n0 3\r\n4 0\r\ne",
+      "output": "6",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "vector area 2",
+      "setup": "make all",
+      "run": "./all",
+      "input": "v a\r\n1 2\r\n4 -2\r\ne",
+      "output": "5",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "vector area 3",
+      "setup": "make all",
+      "run": "./all",
+      "input": "v a\r\n1 -1\r\n-2 2\r\ne",
+      "output": "0",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "line constuctor 1",
+      "setup": "make all",
+      "run": "./all",
+      "input": "l c\r\n0 0\r\n1 2\r\ne",
+      "output": "2x + -1y + 0 = 0",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "line constuctor 2",
+      "setup": "make all",
+      "run": "./all",
+      "input": "l c\r\n0 3\r\n1 2\r\ne",
+      "output": "2x + -1y + 3 = 0",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "line constuctor 3",
+      "setup": "make all",
+      "run": "./all",
+      "input": "l c\r\n-2 0\r\n0 1\r\ne",
+      "output": "1x + 0y + 2 = 0",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "line two points 1",
+      "setup": "make all",
+      "run": "./all",
+      "input": "l t\r\n0 0\r\n1 2\r\ne",
+      "output": "2x + -1y + 0 = 0",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "line two points 2",
+      "setup": "make all",
+      "run": "./all",
+      "input": "l t\r\n0 -1\r\n-1 0\r\ne",
+      "output": "1x + 1y + 1 = 0",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "line are 1",
+      "setup": "make all",
+      "run": "./all",
+      "input": "l a\r\n1 2 3\r\n1 2 0\r\ne",
+      "output": "1",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "line are 2",
+      "setup": "make all",
+      "run": "./all",
+      "input": "l a\r\n1 -2 -1\r\n-2 4 1\r\ne",
+      "output": "1",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "line are 3",
+      "setup": "make all",
+      "run": "./all",
+      "input": "l a\r\n1 0 1\r\n1 0 0\r\ne",
+      "output": "1",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "line are 4",
+      "setup": "make all",
+      "run": "./all",
+      "input": "l a\r\n1 1 1\r\n1 2 2\r\ne",
+      "output": "0",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "line is 1",
+      "setup": "make all",
+      "run": "./all",
+      "input": "l i\r\n1 2 1\r\n-2 1 100\r\ne",
+      "output": "1",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "line is 2",
+      "setup": "make all",
+      "run": "./all",
+      "input": "l i\r\n1 2 0\r\n2 1 1\r\ne",
+      "output": "0",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "line is 3",
+      "setup": "make all",
+      "run": "./all",
+      "input": "l i\r\n1 0 2\r\n0 1 3\r\ne",
+      "output": "1",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "line kolinearen 1",
+      "setup": "make all",
+      "run": "./all",
+      "input": "l k\r\n1 2 3\r\ne",
+      "output": "(-2, 1)",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "line kolinearen 2",
+      "setup": "make all",
+      "run": "./all",
+      "input": "l k\r\n10 -2 100\r\ne",
+      "output": "(2, 10)",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "line kolinearen 3",
+      "setup": "make all",
+      "run": "./all",
+      "input": "l k\r\n0 1 2\r\ne",
+      "output": "(-1, 0)",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "line orthogonal 1",
+      "setup": "make all",
+      "run": "./all",
+      "input": "l o\r\n1 2 1\r\ne",
+      "output": "(1, 2)",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "line orthogonal 2",
+      "setup": "make all",
+      "run": "./all",
+      "input": "l o\r\n-1 0 100\r\ne",
+      "output": "(-1, 0)",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "line parallel 1",
+      "setup": "make all",
+      "run": "./all",
+      "input": "l p\r\n-2 1 0\r\n0 3\r\ne",
+      "output": "-2x + 1y + -3 = 0",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "line parallel 2",
+      "setup": "make all",
+      "run": "./all",
+      "input": "l p\r\n1 0 100\r\n0 0\r\ne",
+      "output": "1x + 0y + 0 = 0",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "line line 1",
+      "setup": "make all",
+      "run": "./all",
+      "input": "l l\r\n1 2 1\r\n0 0\r\ne\r\n",
+      "output": "2x + -1y + 0 = 0",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    },
+    {
+      "name": "line line 2",
+      "setup": "make all",
+      "run": "./all",
+      "input": "l l\r\n0 1 100\r\n-2 0\r\ne",
+      "output": "1x + 0y + 2 = 0",
+      "comparison": "included",
+      "timeout": 1,
+      "points": null
+    }
+  ]
+}
