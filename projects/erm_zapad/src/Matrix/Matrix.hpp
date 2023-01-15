@@ -18,7 +18,9 @@ class Matrix {
 
         double **getData() const;
         void setData(double **data);
+
         double get(int row, int col) const;
+        void set(int row, int col, double value);
 
         void print() const;
 
@@ -31,6 +33,7 @@ class Matrix {
         Matrix operator+(const Matrix &m) const;
         Matrix operator-(const Matrix &m) const;
         Matrix operator*(const Matrix &m) const;
+        Matrix operator/(const Matrix &m) const;
         Matrix operator*(const double &d) const;
         Matrix operator/(const double &d) const;
         Matrix operator=(const Matrix &m);

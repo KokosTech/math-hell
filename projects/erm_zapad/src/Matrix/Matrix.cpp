@@ -54,6 +54,10 @@ void Matrix::setData(double **data) { this->data = data; }
 
 double Matrix::get(int row, int col) const { return this->data[row][col]; }
 
+void Matrix::set(int row, int col, double value) {
+    this->data[row][col] = value;
+}
+
 void Matrix::print() const {
     for (int i = 0; i < this->rows; i++) {
         for (int j = 0; j < this->cols; j++) {
@@ -238,6 +242,38 @@ Matrix Matrix::operator*(const Matrix &m) const {
     return product;
 }
 
+Matrix Matrix::operator/(const Matrix &m) const {
+    /*     if (this->cols != m.rows) {
+            throw std::invalid_argument("Matrices must have compatible
+       dimensions");
+        }
+
+        Matrix quotient(this->rows, m.cols);
+
+        for (int i = 0; i < this->rows; i++) {
+            for (int j = 0; j < m.cols; j++) {
+                for (int k = 0; k < this->cols; k++) {
+                    quotient.data[i][j] += this->data[i][k] / m.data[k][j];
+                }
+            }
+        }
+
+        return quotient; */
+    if (this->cols != m.cols || this->rows != m.rows) {
+        throw std::invalid_argument("Matrices must have the same dimensions");
+    }
+
+    Matrix quotient(this->rows, this->cols);
+
+    for (int i = 0; i < this->rows; i++) {
+        for (int j = 0; j < this->cols; j++) {
+            quotient.data[i][j] = this->data[i][j] / m.data[i][j];
+        }
+    }
+
+    return quotient;
+}
+
 Matrix Matrix::operator*(double const &d) const {
     Matrix product(this->rows, this->cols);
 
@@ -311,4 +347,3 @@ Matrix::~Matrix() {
     }
     delete[] this->data;
 }
-
