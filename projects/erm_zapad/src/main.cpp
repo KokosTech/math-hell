@@ -5,6 +5,8 @@
 
 double SERVICE_PRICES[4] = {0.129, 1.461, 85.07, 0.132};
 
+// Apparently, 'usage' is with one 's'
+
 int main(int argc, char *argv[]) {
     if (argc != 2) {
         std::cout << "Usage: " << argv[0] << " <matrix_file>" << std::endl;
@@ -82,7 +84,7 @@ int main(int argc, char *argv[]) {
     }
 
     Matrix ussage_diff(4, 4, ussage_diff_data);
-    std::cout << "Ussage diff:" << std::endl;
+    std::cout << "Usage diff:" << std::endl;
     ussage_diff.print();
 
     std::ofstream ofile("output.txt");

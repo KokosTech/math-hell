@@ -5,6 +5,8 @@
 #include <ostream>
 #include <stdexcept>
 
+Matrix::Matrix() {this->rows = 0; this->cols = 0; this->data = nullptr;}
+
 Matrix::Matrix(int rows, int cols) {
     this->rows = rows;
     this->cols = cols;
