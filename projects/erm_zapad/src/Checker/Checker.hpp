@@ -41,6 +41,8 @@ public:
 
     Checker(std::string inputFileName, std::string outputFileName);
 
+    Checker &operator=(const Checker &other);
+
     Matrix &calculateBillDiff();
 
     Matrix &calculateUsageDiff();

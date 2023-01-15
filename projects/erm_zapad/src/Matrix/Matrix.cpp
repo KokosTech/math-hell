@@ -4,8 +4,14 @@
 #include <istream>
 #include <ostream>
 #include <stdexcept>
+#include <limits>
+#include <iomanip>
 
-Matrix::Matrix() {this->rows = 0; this->cols = 0; this->data = nullptr;}
+Matrix::Matrix() {
+    this->rows = 0;
+    this->cols = 0;
+    this->data = nullptr;
+}
 
 Matrix::Matrix(int rows, int cols) {
     this->rows = rows;
@@ -54,7 +60,12 @@ double **Matrix::getData() const { return this->data; }
 
 void Matrix::setData(double **data) { this->data = data; }
 
-double Matrix::get(int row, int col) const { return this->data[row][col]; }
+double Matrix::get(int row, int col) const {
+    if (row < 0 || row >= this->rows || col < 0 || col >= this->cols) {
+        throw std::out_of_range("Error: Index out of range");
+    }
+    return this->data[row][col];
+}
 
 void Matrix::set(int row, int col, double value) {
     this->data[row][col] = value;
@@ -63,7 +74,7 @@ void Matrix::set(int row, int col, double value) {
 void Matrix::print() const {
     for (int i = 0; i < this->rows; i++) {
         for (int j = 0; j < this->cols; j++) {
-            std::cout << this->data[i][j] << " ";
+            printf("%.4f\t", this->data[i][j]);
         }
         std::cout << std::endl;
     }
@@ -164,7 +175,7 @@ double Matrix::determinant() const {
 double *gaussJordanElimination(const Matrix &m) {
     if (m.rows != m.cols - 1) {
         throw std::invalid_argument(
-            "Matrix must have one more column than rows");
+                "Matrix must have one more column than rows");
     }
 
     for (int i = 0; i < m.rows; i++) {
@@ -327,9 +338,9 @@ Matrix Matrix::operator=(const Matrix &m) {
 std::ostream &operator<<(std::ostream &os, const Matrix &m) {
     for (int i = 0; i < m.rows; i++) {
         for (int j = 0; j < m.cols; j++) {
-            os << m.data[i][j] << " ";
+            os << std::fixed << std::setprecision(4) << m.data[i][j] << "\t";
         }
-        os << std::endl;
+        os << '\n';
     }
     return os;
 }

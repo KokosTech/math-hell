@@ -4,7 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <sstream>
+#include <limits>
 
 Checker::Checker() {
     loadUsageData();
@@ -13,13 +13,11 @@ Checker::Checker() {
 
 Checker::Checker(std::string inputFileName, std::string outputFileName) {
     if (inputFileName.empty()) {
-        std::cout << "Error: No input file specified" << std::endl;
-        return;
+        throw std::invalid_argument("No input file specified");
     }
 
     if (outputFileName.empty()) {
-        std::cout << "Error: No output file specified" << std::endl;
-        return;
+        throw std::invalid_argument("No output file specified");
     }
 
     this->inputFileName = inputFileName;
@@ -29,10 +27,28 @@ Checker::Checker(std::string inputFileName, std::string outputFileName) {
     loadBillData();
 }
 
+Checker &Checker::operator=(const Checker &other) {
+    if (this != &other) {
+        this->inputFileName = other.inputFileName;
+        this->outputFileName = other.outputFileName;
+        this->billData = other.billData;
+        this->usageData = other.usageData;
+        this->billDiff = other.billDiff;
+        this->usageDiff = other.usageDiff;
+    }
+    return *this;
+}
+
 void Checker::loadBillData() {
+    billData = Matrix(1, COMPANY_COUNT);
     std::ifstream file(inputFileName);
     if (!file.is_open()) {
         throw std::runtime_error("Could not open file " + inputFileName);
+    }
+
+    // skip 4 lines
+    for (int i = 0; i < 4; i++) {
+        file.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
 
     file >> billData;
@@ -44,6 +60,7 @@ void Checker::loadBillData() {
 }
 
 void Checker::loadUsageData() {
+    usageData = Matrix(COMPANY_COUNT, SERVICE_COUNT);
     std::ifstream file(inputFileName);
     if (!file.is_open()) {
         throw std::runtime_error("Could not open file " + inputFileName);
@@ -100,8 +117,10 @@ Matrix &Checker::calculateBillDiff() {
     for (int i = 0; i < 4; i++) {
         double sum = 0;
         for (int j = 0; j < 4; j++) {
+            std::cout << usageData.get(i, j) << " " << SERVICE_PRICES[j] << std::endl;
             sum += usageData.get(i, j) * SERVICE_PRICES[j];
         }
+        std::cout << "SUM" << billData.get(0, i) << " " << sum << std::endl;
         billDiff.set(0, i, billData.get(0, i) - sum);
     }
 
@@ -133,11 +152,11 @@ Matrix &Checker::calculateUsageDiff() {
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
             usageDiff.set(i, j, (usageData.get(i, j) * realPrices[j] / SERVICE_PRICES[j]) -
-                    usageData.get(i, j));
+                                usageData.get(i, j));
         }
     }
 
-    delete[] realPrices;
+    //delete[] realPrices;
 
     // same thing as billDiff - if we want to play with the matrix outside the class
     return usageDiff;
