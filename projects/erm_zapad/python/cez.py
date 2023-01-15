@@ -38,9 +38,8 @@ company_data = [[float(x) for x in line.strip().split()] for line in data[:4]]
 bill_data = [float(x) for x in data[4].strip().split()]
 
 # calculate total usage and bill for each company
-total_usage = [sum(usage) for usage in company_data]
-total_bill = [service_prices[j]*company_data[i][j]
-              for j in range(4) for i in range(4)]
+total_bill = [sum([service_prices[j]*company_data[i][j]
+                  for j in range(4)]) for i in range(4)]
 
 # calculate difference between bill and usage data - using Gauss-Jordan elimination
 bill_diff = [bill_data[i] - total_bill[i] for i in range(4)]
