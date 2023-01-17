@@ -182,6 +182,8 @@ double *gaussJordanElimination(const Matrix &m) {
         double pivot = m.data[i][i];
 
         for (int j = 0; j < m.cols; j++) {
+            if(pivot == 0)
+                throw std::invalid_argument("Matrix is singular (no unique solution)");
             m.data[i][j] /= pivot;
         }
 
