@@ -32,6 +32,8 @@ private:
 
     void writeUsageDiff();
 
+    double *getRealPrices();
+
     void printBillDiff();
 
     void printUsageDiff();

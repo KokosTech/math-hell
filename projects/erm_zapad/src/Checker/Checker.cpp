@@ -87,7 +87,7 @@ void Checker::writeBillDiff() {
 }
 
 void Checker::writeUsageDiff() {
-    std::ofstream file(outputFileName);
+    std::ofstream file(outputFileName, std::ios::app);
     if (!file.is_open())
         throw std::runtime_error("Could not open file " + outputFileName);
 
@@ -126,7 +126,7 @@ Matrix &Checker::calculateBillDiff() {
     return billDiff;
 }
 
-double *Checker::getRealPrices(Matrix &usageDataGauss) {
+double *Checker::getRealPrices() {
     Matrix usageDataGauss(COMPANY_COUNT, SERVICE_COUNT + 1);
 
     for (int i = 0; i < 4; i++) {
@@ -144,7 +144,7 @@ double *Checker::getRealPrices(Matrix &usageDataGauss) {
 }
 
 Matrix &Checker::calculateUsageDiff() {
-    double *realPrices = getRealPrices(usageData);
+    double *realPrices = getRealPrices();
     if (!realPrices)
         throw std::runtime_error("Error: Could not calculate real prices");
 
