@@ -10,6 +10,7 @@ double SERVICE_PRICES[4] = {0.129, 1.461, 85.07, 0.132};
 // TODO: Rename to 'usage'
 // Writing too much JavaScript (and JAVA - OOPs exams) is bad for you - camelCase is not the way to go,
 // but I'm way too used to it now, after speedrinning HT website for a week
+// Btw, I clould have used vector<<vector<double>> instead of double**, but it's more C like this way
 
 int main(int argc, char *argv[]) {
     std::cout << "Welcome to the Matrix Calculator! | " << argc << std::endl;
