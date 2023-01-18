@@ -1,9 +1,17 @@
 #include "Matrix.hpp"
 
+#include <iomanip>
 #include <iostream>
 #include <istream>
+#include <limits>
 #include <ostream>
 #include <stdexcept>
+
+Matrix::Matrix() {
+    this->rows = 0;
+    this->cols = 0;
+    this->data = nullptr;
+}
 
 Matrix::Matrix(int rows, int cols) {
     this->rows = rows;
@@ -12,9 +20,7 @@ Matrix::Matrix(int rows, int cols) {
 
     for (int i = 0; i < rows; i++) {
         this->data[i] = new double[cols];
-        for (int j = 0; j < cols; j++) {
-            this->data[i][j] = 0;
-        }
+        for (int j = 0; j < cols; j++) this->data[i][j] = 0;
     }
 }
 
@@ -48,127 +54,40 @@ int Matrix::getRows() const { return this->rows; }
 
 int Matrix::getCols() const { return this->cols; }
 
-double **Matrix::getData() const { return this->data; }
+double Matrix::get(int row, int col) const {
+    if (row < 0 || row >= this->rows || col < 0 || col >= this->cols)
+        throw std::out_of_range("Error: Index out of range");
 
-void Matrix::setData(double **data) { this->data = data; }
-
-double Matrix::get(int row, int col) const { return this->data[row][col]; }
+    return this->data[row][col];
+}
 
 void Matrix::set(int row, int col, double value) {
+    if (row < 0 || row >= this->rows || col < 0 || col >= this->cols)
+        throw std::out_of_range("Error: Index out of range");
+
     this->data[row][col] = value;
 }
 
 void Matrix::print() const {
     for (int i = 0; i < this->rows; i++) {
-        for (int j = 0; j < this->cols; j++) {
-            std::cout << this->data[i][j] << " ";
-        }
+        for (int j = 0; j < this->cols; j++) printf("%.4f\t", this->data[i][j]);
         std::cout << std::endl;
     }
 }
 
-Matrix Matrix::transpose() const {
-    Matrix m(this->cols, this->rows);
-
-    for (int i = 0; i < this->rows; i++) {
-        for (int j = 0; j < this->cols; j++) {
-            m.data[j][i] = this->data[i][j];
-        }
-    }
-
-    return m;
-}
-
-Matrix Matrix::inverse() const {
-    if (this->rows != this->cols) {
-        throw std::invalid_argument("Matrix must be square");
-    }
-
-    Matrix m(this->rows, this->cols * 2);
-
-    for (int i = 0; i < this->rows; i++) {
-        for (int j = 0; j < this->cols; j++) {
-            m.data[i][j] = this->data[i][j];
-        }
-    }
-
-    for (int i = 0; i < this->rows; i++) {
-        for (int j = this->cols; j < this->cols * 2; j++) {
-            if (i == j - this->cols) {
-                m.data[i][j] = 1;
-            } else {
-                m.data[i][j] = 0;
-            }
-        }
-    }
-
-    for (int i = 0; i < this->rows; i++) {
-        double pivot = m.data[i][i];
-
-        for (int j = 0; j < this->cols * 2; j++) {
-            m.data[i][j] /= pivot;
-        }
-
-        for (int j = 0; j < this->rows; j++) {
-            if (i != j) {
-                double factor = m.data[j][i];
-
-                for (int k = 0; k < this->cols * 2; k++) {
-                    m.data[j][k] -= factor * m.data[i][k];
-                }
-            }
-        }
-    }
-
-    Matrix inverse(this->rows, this->cols);
-
-    for (int i = 0; i < this->rows; i++) {
-        for (int j = this->cols; j < this->cols * 2; j++) {
-            inverse.data[i][j - this->cols] = m.data[i][j];
-        }
-    }
-
-    return inverse;
-}
-
-double Matrix::determinant() const {
-    if (this->rows != this->cols) {
-        throw std::invalid_argument("Matrix must be square");
-    }
-
-    Matrix m(*this);
-
-    for (int i = 0; i < this->rows; i++) {
-        for (int j = 0; j < this->rows; j++) {
-            if (i != j) {
-                double factor = m.data[j][i] / m.data[i][i];
-
-                for (int k = 0; k < this->cols; k++) {
-                    m.data[j][k] -= factor * m.data[i][k];
-                }
-            }
-        }
-    }
-
-    double det = 1;
-
-    for (int i = 0; i < this->rows; i++) {
-        det *= m.data[i][i];
-    }
-
-    return det;
-}
-
 double *gaussJordanElimination(const Matrix &m) {
-    if (m.rows != m.cols - 1) {
+    if (m.rows != m.cols - 1)
         throw std::invalid_argument(
             "Matrix must have one more column than rows");
-    }
 
     for (int i = 0; i < m.rows; i++) {
         double pivot = m.data[i][i];
 
         for (int j = 0; j < m.cols; j++) {
+            if (pivot == 0)
+                throw std::invalid_argument(
+                    "Matrix is singular (no unique solution)");
+
             m.data[i][j] /= pivot;
         }
 
@@ -176,18 +95,14 @@ double *gaussJordanElimination(const Matrix &m) {
             if (i != j) {
                 double factor = m.data[j][i];
 
-                for (int k = 0; k < m.cols; k++) {
+                for (int k = 0; k < m.cols; k++)
                     m.data[j][k] -= factor * m.data[i][k];
-                }
             }
         }
     }
 
     double *solution = new double[m.rows];
-
-    for (int i = 0; i < m.rows; i++) {
-        solution[i] = m.data[i][m.cols - 1];
-    }
+    for (int i = 0; i < m.rows; i++) solution[i] = m.data[i][m.cols - 1];
 
     return solution;
 }
@@ -242,38 +157,6 @@ Matrix Matrix::operator*(const Matrix &m) const {
     return product;
 }
 
-Matrix Matrix::operator/(const Matrix &m) const {
-    /*     if (this->cols != m.rows) {
-            throw std::invalid_argument("Matrices must have compatible
-       dimensions");
-        }
-
-        Matrix quotient(this->rows, m.cols);
-
-        for (int i = 0; i < this->rows; i++) {
-            for (int j = 0; j < m.cols; j++) {
-                for (int k = 0; k < this->cols; k++) {
-                    quotient.data[i][j] += this->data[i][k] / m.data[k][j];
-                }
-            }
-        }
-
-        return quotient; */
-    if (this->cols != m.cols || this->rows != m.rows) {
-        throw std::invalid_argument("Matrices must have the same dimensions");
-    }
-
-    Matrix quotient(this->rows, this->cols);
-
-    for (int i = 0; i < this->rows; i++) {
-        for (int j = 0; j < this->cols; j++) {
-            quotient.data[i][j] = this->data[i][j] / m.data[i][j];
-        }
-    }
-
-    return quotient;
-}
-
 Matrix Matrix::operator*(double const &d) const {
     Matrix product(this->rows, this->cols);
 
@@ -284,18 +167,6 @@ Matrix Matrix::operator*(double const &d) const {
     }
 
     return product;
-}
-
-Matrix Matrix::operator/(double const &d) const {
-    Matrix quotient(this->rows, this->cols);
-
-    for (int i = 0; i < this->rows; i++) {
-        for (int j = 0; j < this->cols; j++) {
-            quotient.data[i][j] = this->data[i][j] / d;
-        }
-    }
-
-    return quotient;
 }
 
 Matrix Matrix::operator=(const Matrix &m) {
@@ -325,9 +196,9 @@ Matrix Matrix::operator=(const Matrix &m) {
 std::ostream &operator<<(std::ostream &os, const Matrix &m) {
     for (int i = 0; i < m.rows; i++) {
         for (int j = 0; j < m.cols; j++) {
-            os << m.data[i][j] << " ";
+            os << std::fixed << std::setprecision(4) << m.data[i][j] << "\t";
         }
-        os << std::endl;
+        os << '\n';
     }
     return os;
 }
@@ -342,8 +213,8 @@ std::istream &operator>>(std::istream &is, Matrix &m) {
 }
 
 Matrix::~Matrix() {
-    for (int i = 0; i < this->rows; i++) {
-        delete[] this->data[i];
-    }
+    if (this->data == nullptr) return;
+
+    for (int i = 0; i < this->rows; i++) delete[] this->data[i];
     delete[] this->data;
 }

@@ -13,7 +13,9 @@ class Matrix {
         Matrix(int rows, int cols, double **data);
         Matrix(const Matrix &m);
 
-        int getRows() const;
+    Matrix();
+
+    int getRows() const;
         int getCols() const;
 
         double **getData() const;
