@@ -109,13 +109,12 @@ void Checker::printUsageDiff() {
 }
 
 Matrix &Checker::calculateBillDiff() {
-    billDiff = Matrix(1, 4);
+    billDiff = Matrix(1, COMPANY_COUNT);
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < COMPANY_COUNT; i++) {
         double sum = 0;
 
-        // TODO: Just use * operator
-        for (int j = 0; j < 4; j++)
+        for (int j = 0; j < SERVICE_COUNT; j++)
             sum += usageData.get(i, j) * SERVICE_PRICES[j];
 
         billDiff.set(0, i, billData.get(0, i) - sum);
@@ -129,11 +128,11 @@ Matrix &Checker::calculateBillDiff() {
 double *Checker::getRealPrices() {
     Matrix usageDataGauss(COMPANY_COUNT, SERVICE_COUNT + 1);
 
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
+    for (int i = 0; i < COMPANY_COUNT; i++) {
+        for (int j = 0; j < SERVICE_COUNT; j++) {
             usageDataGauss.set(i, j, usageData.get(i, j));
         }
-        usageDataGauss.set(i, 4, billData.get(0, i));
+        usageDataGauss.set(i, SERVICE_COUNT, billData.get(0, i));
     }
 
     double *realPrices = gaussJordanElimination(usageDataGauss);
@@ -148,10 +147,10 @@ Matrix &Checker::calculateUsageDiff() {
     if (!realPrices)
         throw std::runtime_error("Error: Could not calculate real prices");
 
-    this->usageDiff = Matrix(4, 4);
+    this->usageDiff = Matrix(COMPANY_COUNT, SERVICE_COUNT);
 
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
+    for (int i = 0; i < COMPANY_COUNT; i++) {
+        for (int j = 0; j < SERVICE_COUNT; j++) {
             double usageDiff =
                 (usageData.get(i, j) * realPrices[j] / SERVICE_PRICES[j]) -
                 usageData.get(i, j);
