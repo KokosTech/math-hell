@@ -128,34 +128,26 @@ Matrix &Checker::calculateBillDiff() {
 
 double *Checker::getRealPrices(Matrix &usageDataGauss) {
     Matrix usageDataGauss(COMPANY_COUNT, SERVICE_COUNT + 1);
-    double **data = new double *[4];
 
     for (int i = 0; i < 4; i++) {
-        data[i] = new double[5];
-
         for (int j = 0; j < 4; j++) {
-            data[i][j] = usageData.get(i, j);
+            usageDataGauss.set(i, j, usageData.get(i, j));
         }
-
-        data[i][4] = billData.get(0, i);
+        usageDataGauss.set(i, 4, billData.get(0, i));
     }
-
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 5; j++) {
-            usageDataGauss.set(i, j, data[i][j]);
-        }
-    }
-
-    for (int i = 0; i < 4; i++) delete[] data[i];
-    delete[] data;
 
     double *realPrices = gaussJordanElimination(usageDataGauss);
+    if (!realPrices)
+        throw std::runtime_error("Error: Could not calculate real prices");
 
     return realPrices;
 }
 
 Matrix &Checker::calculateUsageDiff() {
     double *realPrices = getRealPrices(usageData);
+    if (!realPrices)
+        throw std::runtime_error("Error: Could not calculate real prices");
+
     this->usageDiff = Matrix(4, 4);
 
     for (int i = 0; i < 4; i++) {
