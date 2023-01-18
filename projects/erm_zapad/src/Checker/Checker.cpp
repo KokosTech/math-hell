@@ -1,10 +1,11 @@
 #include "Checker.hpp"
-#include "../Matrix/Matrix.hpp"
 
-#include <iostream>
 #include <fstream>
-#include <string>
+#include <iostream>
 #include <limits>
+#include <string>
+
+#include "../Matrix/Matrix.hpp"
 
 Checker::Checker() {
     loadUsageData();
@@ -12,13 +13,11 @@ Checker::Checker() {
 }
 
 Checker::Checker(std::string inputFileName, std::string outputFileName) {
-    if (inputFileName.empty()) {
+    if (inputFileName.empty())
         throw std::invalid_argument("No input file specified");
-    }
 
-    if (outputFileName.empty()) {
+    if (outputFileName.empty())
         throw std::invalid_argument("No output file specified");
-    }
 
     this->inputFileName = inputFileName;
     this->outputFileName = outputFileName;
@@ -36,68 +35,65 @@ Checker &Checker::operator=(const Checker &other) {
         this->billDiff = other.billDiff;
         this->usageDiff = other.usageDiff;
     }
+
     return *this;
 }
 
 void Checker::loadBillData() {
     billData = Matrix(1, COMPANY_COUNT);
-    std::ifstream file(inputFileName);
-    if (!file.is_open()) {
-        throw std::runtime_error("Could not open file " + inputFileName);
-    }
 
-    // skip 4 lines
-    for (int i = 0; i < 4; i++) {
+    std::ifstream file(inputFileName);
+    if (!file.is_open())
+        throw std::runtime_error("Could not open file " + inputFileName);
+
+    // skip first 4 lines
+    for (int i = 0; i < COMPANY_COUNT; i++) {
         file.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        if (!file.good())
+            throw std::runtime_error("Error: Could not skip line");
     }
 
     file >> billData;
-    if (!file.good()) {
+    if (!file.good())
         throw std::runtime_error("Error: Could not read bill data");
-    }
 
     file.close();
 }
 
 void Checker::loadUsageData() {
     usageData = Matrix(COMPANY_COUNT, SERVICE_COUNT);
+
     std::ifstream file(inputFileName);
-    if (!file.is_open()) {
+    if (!file.is_open())
         throw std::runtime_error("Could not open file " + inputFileName);
-    }
 
     file >> usageData;
-    if (!file.good()) {
+    if (!file.good())
         throw std::runtime_error("Error: Could not read usage data");
-    }
 
     file.close();
 }
 
 void Checker::writeBillDiff() {
     std::ofstream file(outputFileName);
-    if (!file.is_open()) {
+    if (!file.is_open())
         throw std::runtime_error("Could not open file " + outputFileName);
-    }
 
     file << billDiff;
-    if (!file.good()) {
+    if (!file.good())
         throw std::runtime_error("Error: Could not write bill diff");
-    }
 
     file.close();
 }
 
 void Checker::writeUsageDiff() {
     std::ofstream file(outputFileName);
-    if (!file.is_open()) {
+    if (!file.is_open())
         throw std::runtime_error("Could not open file " + outputFileName);
-    }
 
     file << usageDiff;
-    if (!file.good()) {
+    if (!file.good())
         throw std::runtime_error("Error: Could not write usage diff");
-    }
 
     file.close();
 }
@@ -114,28 +110,33 @@ void Checker::printUsageDiff() {
 
 Matrix &Checker::calculateBillDiff() {
     billDiff = Matrix(1, 4);
+
     for (int i = 0; i < 4; i++) {
         double sum = 0;
-        for (int j = 0; j < 4; j++) {
-            std::cout << usageData.get(i, j) << " " << SERVICE_PRICES[j] << std::endl;
+
+        // TODO: Just use * operator
+        for (int j = 0; j < 4; j++)
             sum += usageData.get(i, j) * SERVICE_PRICES[j];
-        }
-        std::cout << "SUM" << billData.get(0, i) << " " << sum << std::endl;
+
         billDiff.set(0, i, billData.get(0, i) - sum);
     }
 
-    // if we want to play with the matrix outside the class (damn, clion is fixing my awful grammar)
+    // if we want to play with the matrix outside the class (damn, clion is
+    // fixing my awful grammar)
     return billDiff;
 }
 
-Matrix &Checker::calculateUsageDiff() {
+double *Checker::getRealPrices(Matrix &usageDataGauss) {
     Matrix usageDataGauss(COMPANY_COUNT, SERVICE_COUNT + 1);
     double **data = new double *[4];
+
     for (int i = 0; i < 4; i++) {
         data[i] = new double[5];
+
         for (int j = 0; j < 4; j++) {
             data[i][j] = usageData.get(i, j);
         }
+
         data[i][4] = billData.get(0, i);
     }
 
@@ -145,20 +146,32 @@ Matrix &Checker::calculateUsageDiff() {
         }
     }
 
+    for (int i = 0; i < 4; i++) delete[] data[i];
+    delete[] data;
+
     double *realPrices = gaussJordanElimination(usageDataGauss);
 
-    usageDiff = Matrix(4, 4);
+    return realPrices;
+}
+
+Matrix &Checker::calculateUsageDiff() {
+    double *realPrices = getRealPrices(usageData);
+    this->usageDiff = Matrix(4, 4);
 
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            usageDiff.set(i, j, (usageData.get(i, j) * realPrices[j] / SERVICE_PRICES[j]) -
-                                usageData.get(i, j));
+            double usageDiff =
+                (usageData.get(i, j) * realPrices[j] / SERVICE_PRICES[j]) -
+                usageData.get(i, j);
+
+            this->usageDiff.set(i, j, usageDiff);
         }
     }
 
-    //delete[] realPrices;
+    delete[] realPrices;
 
-    // same thing as billDiff - if we want to play with the matrix outside the class
+    // same thing as billDiff - if we want to play with the matrix outside
+    // the class
     return usageDiff;
 }
 
@@ -174,4 +187,8 @@ void Checker::saveToFile() {
 
 Checker::~Checker() {
     // free memory
+    // delete &billData;
+    // delete &usageData;
+    // delete &billDiff;
+    // delete &usageDiff;
 }
