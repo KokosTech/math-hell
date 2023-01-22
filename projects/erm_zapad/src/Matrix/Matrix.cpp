@@ -80,29 +80,48 @@ double *gaussJordanElimination(const Matrix &m) {
         throw std::invalid_argument(
             "Matrix must have one more column than rows");
 
-    for (int i = 0; i < m.rows; i++) {
-        double pivot = m.data[i][i];
+    Matrix matrix(m);
 
-        for (int j = 0; j < m.cols; j++) {
-            if (pivot == 0)
-                throw std::invalid_argument(
-                    "Matrix is singular (no unique solution)");
+    for (int i = 0; i < matrix.rows; i++) {
+        double pivot = matrix.data[i][i];
 
-            m.data[i][j] /= pivot;
+        for (int j = 0; j < matrix.cols; j++) {
+            while (pivot == 0) {
+                int k = i + 1;
+
+                for (k; k < matrix.rows; k++) {
+                    if (matrix.data[k][i] != 0) {
+                        for (int l = 0; l < matrix.cols; l++) {
+                            double temp = matrix.data[i][l];
+                            matrix.data[i][l] = matrix.data[k][l];
+                            matrix.data[k][l] = temp;
+                        }
+                        break;
+                    }
+                }
+
+                if (k == matrix.rows)
+                    throw std::invalid_argument("Matrix is singular");
+
+                pivot = matrix.data[i][i];
+            }
+
+            matrix.data[i][j] /= pivot;
         }
 
-        for (int j = 0; j < m.rows; j++) {
+        for (int j = 0; j < matrix.rows; j++) {
             if (i != j) {
-                double factor = m.data[j][i];
+                double factor = matrix.data[j][i];
 
-                for (int k = 0; k < m.cols; k++)
-                    m.data[j][k] -= factor * m.data[i][k];
+                for (int k = 0; k < matrix.cols; k++)
+                    matrix.data[j][k] -= factor * matrix.data[i][k];
             }
         }
     }
 
-    double *solution = new double[m.rows];
-    for (int i = 0; i < m.rows; i++) solution[i] = m.data[i][m.cols - 1];
+    double *solution = new double[matrix.rows];
+    for (int i = 0; i < matrix.rows; i++)
+        solution[i] = matrix.data[i][matrix.cols - 1];
 
     return solution;
 }
